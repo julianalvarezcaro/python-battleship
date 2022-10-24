@@ -1,7 +1,9 @@
 import flask
 import http
 
+from battleship.controllers.delete_game import delete_game
 from battleship.controllers.placement import create_game
+from battleship.controllers.shots import shot_fired
 
 app = flask.Flask(__name__)
 
@@ -13,13 +15,10 @@ def create_battleship_game():
 @app.route('/battleship', methods=['PUT'])
 def shot():
     #  Specifies a shot against the game. The payload contains the coordinates for the shot.
-    ret = Board.shot()
-    if Board.game_ended():
-        ret += '\n GAME ENDED'
-    return flask.jsonify({ret}), http.HTTPStatus.OK
+    return shot_fired(flask.request.get_json())
 
 
 @app.route('/battleship', methods=['DELETE'])
 def delete_battleship_game():
     # Deletes the current game.
-    return flask.jsonify({}), http.HTTPStatus.NOT_IMPLEMENTED
+    return delete_game()
