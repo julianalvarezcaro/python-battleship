@@ -15,7 +15,7 @@ def create_game(payload: Dict):
     board = Board()
     for ship_data in payload.get('ships'):
         if not is_valid_ship_positioning(ship_data['x'], ship_data['y'], ship_data['size'], ship_data['direction']):
-            return 'Careful! Your ships are falling off the sea!', 400
+            return jsonify({'message': 'Careful! Your ships are falling off the sea!'}), HTTPStatus.BAD_REQUEST
 
         ret = board.add_ship(**ship_data)
         if ret == HTTPStatus.BAD_REQUEST:
